@@ -1,6 +1,6 @@
 {
     "coin": "2ACoin",
-    "symbol": "2AC",
+    "symbol": "ARMS",
     "coinUnits": 100000000,
     "coinDifficultyTarget": 90,
     "logging": {
@@ -17,7 +17,7 @@
     "poolServer": {
         "enabled": true,
         "clusterForks": "auto",
-        "poolAddress": "guns73LDDERfDkU4FJjH5ChtYzNLdmBugPehhBRGjQkAYULAcHA9eu19kLJfsqqLCh58oopo8qY5fbc6skwqvGw74D38wpyMLz",
+        "poolAddress": "gunsRiQPL4gBXw4KqXFTQmYaN9dJPdJNy4MjSEJsnym6M7SVusRsbJrX62wXCSAyys3THEoDQ2mSD74xnxy8xuZS2YnzMawxY7",
         "blockRefreshInterval": 1000,
         "minerTimeout": 900,
         "ports": [
@@ -91,7 +91,7 @@
         "interval": 600,
         "maxAddresses": 50,
         "mixin": 0,
-        "transferFee": 5000000,
+        "transferFee": 50000,
         "minPayment": 1000000000,
         "maxTransactionAmount": 150000000000,
         "denomination": 100000
@@ -116,12 +116,12 @@
     },
     "daemon": {
         "host": "127.0.0.1",
-        "port": 17910,
-        "legacy": false
+        "port": 17910
     },
     "wallet": {
         "host": "127.0.0.1",
-        "port": 17760
+        "port": 17760,
+        "password": "2acoinpwd"
     },
     "redis": {
         "host": "127.0.0.1",
@@ -130,12 +130,11 @@
     "monitoring": {
         "daemon": {
             "checkInterval": 60,
-            "rpcMethod": "getblockcount",
-            "legacy": false
+            "rpcMethod": "getblockcount"
         },
         "wallet": {
             "checkInterval": 60,
-            "rpcMethod": "getbalance"
+            "rpcMethod": "getStatus"
         }
     },
     "charts": {
