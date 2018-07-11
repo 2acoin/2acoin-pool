@@ -143,7 +143,7 @@
         </div>        
     </div>
     <div class="col-sm-20 chartWrap">        
-        <h4>Miners</h4>
+        <h4>Workers</h4>
         <div id="chartWorkers" data-chart="workers">
             <div class="chart"></div>
             <!-- <p class="text-center" id="cur_workers">-</p> -->
@@ -271,28 +271,8 @@
         </div>       
     </div>
     
-    <hr class="yourStats">
-	<h4 class="yourStats">Payout level</h4>
-	<p class="yourStats">If you prefer a higher payout level than the pool's default then this is
-	where you can change it for your miners. (Minimum payout: <span id="min_payout"></span>)</p>
-	
-	<div class="form-inline yourStats">
-		<div class="form-group">
-			<label for="yourPayoutRate">Minimum payout:</label>
-			<div class="input-group">
-				<input class="form-control" id="yourPayoutRate" type="number" >
-				<span class="input-group-btn">
-					<button class="btn btn-default" type="button" id="payoutSetButton">
-						<span><i class="fa fa-check"></i> Set</span>
-					</button>
-				</span>
-			</div>
-		</div>
-	</div>
-	<div class="yourStats">
-      <div id="action_update_message" role="alert" ></div>
-    </div>
-	<hr class="yourStats">
+
+    <br class="yourStats">
 
     <h4 class="yourStats">Payments</h4>
     <div class="yourStats table-responsive">
@@ -317,6 +297,8 @@
 </div>
 
 <script>
+
+
     currentPage = {
         destroy: function(){
             $('#networkLastBlockFound,#poolLastBlockFound,#yourLastShare,#marketLastUpdated').timeago('dispose');
@@ -368,8 +350,11 @@
 
             updateText('poolFee', /*floatToString(totalFee)*/ totalFee + '%');
 
-
-            updateText('blockSolvedTime', getReadableTime(lastStats.network.difficulty / lastStats.pool.hashrate));
+/* DFChange*/
+/*            updateText('blockSolvedTime', getReadableTime(lastStats.network.difficulty / lastStats.pool.hashrate));    */
+            var genesisTime = (Date.parse(genesis_date)/1000);
+/*            updateText('blockSolvedTime', getReadableTime((lastStats.network.timestamp - genesisTime)/lastStats.network.height));    */
+            updateText('blockSolvedTime', formatSecondsAsTime(((lastStats.network.timestamp - genesisTime)/lastStats.network.height), 'm:ss') + ' minutes');  
             updateText('calcHashSymbol', lastStats.config.symbol);
 
             calcEstimateProfit();
@@ -398,6 +383,28 @@
         return formatAmounts(amount,  units[units.length - 1][1]);
     }
 
+    function formatSecondsAsTime(secs, format) {
+		var hr  = Math.floor(secs / 3600);
+		var min = Math.floor((secs - (hr * 3600))/60);
+		var sec = Math.floor(secs - (hr * 3600) -  (min * 60));
+
+		if (hr < 10)   { hr    = "0" + hr; }
+		if (min < 10) { min = "0" + min; }
+		if (sec < 10)  { sec  = "0" + sec; }
+		if (hr)            { hr   = "00"; }
+
+		if (format != null) {
+			var formatted_time = format.replace('hh', hr);
+			formatted_time = formatted_time.replace('h', hr*1+""); // check for single hour formatting
+			formatted_time = formatted_time.replace('mm', min);
+			formatted_time = formatted_time.replace('m', min*1+""); // check for single minute formatting
+			formatted_time = formatted_time.replace('ss', sec);
+			formatted_time = formatted_time.replace('s', sec*1+""); // check for single second formatting
+			return formatted_time;
+		} else {
+			return hr + ':' + min + ':' + sec;
+		}
+	}
 
 
 
@@ -456,7 +463,9 @@
         try {
             var rateUnit = Math.pow(1024,parseInt($('#calcHashUnit').data('mul')));
             var hashRate = parseFloat($('#calcHashRate').val()) * rateUnit;
-            var profit = (hashRate * 86400 / lastStats.network.difficulty) * lastStats.network.reward;
+            /* Use block time in calculation = 960 */
+/*            var profit = (hashRate * 86400 / lastStats.network.difficulty) * lastStats.network.reward;   */
+            var profit = (hashRate * 960 / lastStats.network.difficulty) * lastStats.network.reward;
             if (profit) {
                 updateText('calcHashAmount', getReadableCoins(profit, 2, true));
                 return;
@@ -468,43 +477,7 @@
 
 
 
-	/* Payouts */
 
-    function getPayoutLevel(address) {
-        $.ajax({
-            url: api + '/get_miner_payout_level?address=' + address,
-            dataType: 'json',
-            cache: 'false'
-        }).done(function(data){
-          if (data.level != undefined) {
-            $('#yourPayoutRate').val(data.level);
-          }
-        });
-    }
-
-    function setPayoutLevel(address, level) {
-        $.ajax({
-            url: api + '/set_miner_payout_level?address=' + address + '&level=' + level,
-            dataType: 'json',
-            cache: 'false'
-        }).done(function(data){
-          if (data.status == 'done') {
-            $('#action_update_message').text('Done! Your payout level was set');
-            $('#action_update_message').removeClass().addClass('alert alert-success');
-          } else {
-						$('#action_update_message').text('OOPS! Something went wrong: ' + data.status);
-            $('#action_update_message').removeClass().addClass('alert alert-danger');
-          }
-        });
-    }
-	
-	$('#payoutSetButton').click(function(){
-        var address = $('#yourStatsInput').val();
-        var level = $('#yourPayoutRate').val();
-        setPayoutLevel(address, level);
-    });
-
-	updateText('min_payout', getReadableCoins(lastStats.config.minPaymentThreshold, 2));
 
     /* Stats by mining address lookup */
 
@@ -585,7 +558,7 @@
                         cache: false,
                         dataType: 'json',            
                         success: function(data) {
-                            createUserCharts(data);
+                            createUserCharts(data);                                
                         }
                     });
 
@@ -628,7 +601,6 @@
     if (address){
         $('#yourStatsInput').val(address);
         $('#lookUp').click();
-        getPayoutLevel(address);
     }
 
     $('#yourStatsInput').keyup(function(e){

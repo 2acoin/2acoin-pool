@@ -137,12 +137,24 @@
                 else {
                     var accurateShares = shares;
                 }
-                if (difficulty > accurateShares){
-                    var percent = 100 - Math.round(accurateShares / difficulty * 100);
+//  DF Change
+// ************************* Original
+//                if (difficulty > accurateShares){
+//                    var percent = 100 - Math.round(accurateShares / difficulty * 100);
+//                    return '<span class="luckGood">' + percent + '%</span>';
+//                }
+//                else{
+//                    var percent = (100 - Math.round(difficulty / accurateShares * 100)) * -1;
+//                    return '<span class="luckBad">' + percent + '%</span>';
+//                }
+//  DF Code Below...
+                var percent = Math.round((accurateShares / (difficulty * 100)));
+                if (percent <= 100){
+//                    return '<span class="luckGood">' + accurateShares + "/" + (difficulty*100)  + "=" + percent + '%</span>';
                     return '<span class="luckGood">' + percent + '%</span>';
                 }
                 else{
-                    var percent = (100 - Math.round(difficulty / accurateShares * 100)) * -1;
+//                    return '<span class="luckBad">' + accurateShares + "/" + (difficulty*100)  + "=" + percent + '%</span>';
                     return '<span class="luckBad">' + percent + '%</span>';
                 }
 	    }
@@ -153,7 +165,8 @@
 
         var blockStatusClasses = {
             'pending': '',
-            'unlocked': 'success',
+//            'unlocked': 'success',
+            'unlocked': '',
             'orphaned': 'danger'
         };
 

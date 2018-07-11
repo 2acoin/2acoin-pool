@@ -1,7 +1,7 @@
 <script>
 
 	function formatLuck(difficulty, shares) {
-		var percent = Math.round(shares / difficulty * 100);
+		var percent = Math.round(shares / (difficulty * 100));
 		if(!percent) {
 			return '<span class="luckGood">?</span>';
 		}

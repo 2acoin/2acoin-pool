@@ -21,7 +21,7 @@ var networkExplorer = "http://pool.2acoin.org#network";
 var themeCss = "themes/motherboard-dark-theme.css";
 
 var networkStat = {
-    "2ac": [
+    "arms": [
         ["pool.2acoin.org", "http://45.76.232.71:8117"],
     ],
     "bcn": [
@@ -30,4 +30,4 @@ var networkStat = {
     ]
 };
 
-var genesis_date = "2018-06-20T14:28:00-05:00";
+var genesis_date = "2018-07-10T15:05:00-05:00";
