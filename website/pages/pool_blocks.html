@@ -139,24 +139,24 @@
                 }
 //  DF Change
 // ************************* Original
-//                if (difficulty > accurateShares){
-//                    var percent = 100 - Math.round(accurateShares / difficulty * 100);
-//                    return '<span class="luckGood">' + percent + '%</span>';
-//                }
-//                else{
-//                    var percent = (100 - Math.round(difficulty / accurateShares * 100)) * -1;
-//                    return '<span class="luckBad">' + percent + '%</span>';
-//                }
-//  DF Code Below...
-                var percent = Math.round((accurateShares / (difficulty * 100)));
-                if (percent <= 100){
-//                    return '<span class="luckGood">' + accurateShares + "/" + (difficulty*100)  + "=" + percent + '%</span>';
+                if (difficulty > accurateShares){
+                    var percent = 100 - Math.round(accurateShares / difficulty * 100);
                     return '<span class="luckGood">' + percent + '%</span>';
                 }
                 else{
-//                    return '<span class="luckBad">' + accurateShares + "/" + (difficulty*100)  + "=" + percent + '%</span>';
+                    var percent = (100 - Math.round(difficulty / accurateShares * 100)) * -1;
                     return '<span class="luckBad">' + percent + '%</span>';
                 }
+//  DF Code Below...
+//                var percent = Math.round((accurateShares / (difficulty * 100)));
+//                if (percent <= 100){
+//                    return '<span class="luckGood">' + accurateShares + "/" + (difficulty*100)  + "=" + percent + '%</span>';
+//                    return '<span class="luckGood">' + percent + '%</span>';
+//                }
+//                else{
+//                    return '<span class="luckBad">' + accurateShares + "/" + (difficulty*100)  + "=" + percent + '%</span>';
+//                    return '<span class="luckBad">' + percent + '%</span>';
+//                }
 	    }
 
 	    function formatBlockLink(hash){
